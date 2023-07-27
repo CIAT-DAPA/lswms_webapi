@@ -12,7 +12,7 @@ class AdministrativeLevel2(Resource):
         """
         Get all Administrative levels 2 from database (woreda)
         ---
-        description: Query the information of the administrative levels 2 (Zone). This endpoint needs one parameter, **adm1** that is id of the administrative levels 1 (Region) to be queried (this id can be obtained from the endpoint `/adm1`); The API will respond with the list of the zones from that specific region.
+        description: Query the information of the administrative levels 2 (woreda). This endpoint needs one parameter, **adm1** that is id of the administrative levels 1 (Region) to be queried (this id can be obtained from the endpoint `/adm1`); The API will respond with the list of the zones from that specific region.
         parameters:
           - in: path
             name: adm1
