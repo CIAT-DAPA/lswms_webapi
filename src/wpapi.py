@@ -13,6 +13,7 @@ from mongoengine import *
 from api_modules.adm1 import AdministrativeLevel1
 from api_modules.adm2 import AdministrativeLevel2
 from api_modules.adm3 import AdministrativeLevel3
+from api_modules.watershed import Watersheds
 
 #from api_modules.layers import Layers
 
@@ -33,6 +34,7 @@ def home():
 api.add_resource(AdministrativeLevel1, '/api/v1/adm1')
 api.add_resource(AdministrativeLevel2, '/api/v1/adm2/<adm1>')
 api.add_resource(AdministrativeLevel3, '/api/v1/adm3/<adm2>')
+api.add_resource(Watersheds, '/api/v1/watershed/<adm3>')
 
 
 
