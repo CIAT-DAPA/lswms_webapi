@@ -10,9 +10,9 @@ class AdministrativeLevel3(Resource):
 
     def get(self,adm2=None):
         """
-        Get all Administrative levels 3 from database (Woreda)
+        Get all Administrative levels 3 from database (kebekle)
         ---
-        description: Query the information of the administrative levels 3 (Woreda). This endpoint needs one parameter, **adm2** that is id of the administrative levels 2 (Zone) to be queried (this id can be obtained from the endpoint `/adm2`); The API will respond with the list of the Woredas from that specific zone.
+        description: Query the information of the administrative levels 3 (kebele). This endpoint needs one parameter, **adm2** that is id of the administrative levels 2 (woreda) to be queried (this id can be obtained from the endpoint `/adm2`); The API will respond with the list of the kebeles from that specific woreda.
         parameters:
           - in: path
             name: adm2

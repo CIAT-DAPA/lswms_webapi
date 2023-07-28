@@ -32,11 +32,9 @@ def home():
 # New methods
 api.add_resource(AdministrativeLevel1, '/api/v1/adm1')
 api.add_resource(AdministrativeLevel2, '/api/v1/adm2/<adm1>')
+api.add_resource(AdministrativeLevel3, '/api/v1/adm3/<adm2>')
 
 
-
-#api.add_resource(Layers, '/layers')
-#api.add_resource(MetricType, '/metric_types')
 
 
 
