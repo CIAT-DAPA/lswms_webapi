@@ -14,6 +14,8 @@ from api_modules.adm1 import AdministrativeLevel1
 from api_modules.adm2 import AdministrativeLevel2
 from api_modules.adm3 import AdministrativeLevel3
 from api_modules.watershed import Watersheds
+from api_modules.waterpoint import Waterpoints
+from api_modules.sigle_waterpoint import SingleWaterpoints
 
 #from api_modules.layers import Layers
 
@@ -35,6 +37,8 @@ api.add_resource(AdministrativeLevel1, '/api/v1/adm1')
 api.add_resource(AdministrativeLevel2, '/api/v1/adm2/<adm1>')
 api.add_resource(AdministrativeLevel3, '/api/v1/adm3/<adm2>')
 api.add_resource(Watersheds, '/api/v1/watershed/<adm3>')
+api.add_resource(Waterpoints, '/api/v1/waterpoints')
+api.add_resource(SingleWaterpoints, '/api/v1/waterpoints/<waterpoint>')
 
 
 
