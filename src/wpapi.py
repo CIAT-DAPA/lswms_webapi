@@ -17,6 +17,8 @@ from api_modules.watershed import Watersheds
 from api_modules.waterpoint import Waterpoints
 from api_modules.sigle_waterpoint import SingleWaterpoints
 from api_modules.monitored_data import MonitoredData
+from api_modules.warterpoint_profile import WaterpointsProfile
+from api_modules.single_waterpoint_profile import SingleWaterpointsProfile
 
 #from api_modules.layers import Layers
 
@@ -40,6 +42,8 @@ api.add_resource(Watersheds, '/api/v1/watershed/<adm3>')
 api.add_resource(Waterpoints, '/api/v1/waterpoints')
 api.add_resource(SingleWaterpoints, '/api/v1/waterpoints/<waterpoint>')
 api.add_resource(MonitoredData, '/api/v1/monitored/<waterpoint>')
+api.add_resource(WaterpointsProfile, '/api/v1/waterpointsprofiles')
+api.add_resource(SingleWaterpointsProfile, '/api/v1/waterpointsprofiles/<waterpoint>')
 
 
 
