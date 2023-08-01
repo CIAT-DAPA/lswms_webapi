@@ -17,26 +17,26 @@ class Waterpoints(Resource):
           200:
             description: Waterpoints
             schema:
-              id: waterpoint
+              id: Waterpoints
               properties:
                 id:
                   type: string
-                  description: Id waterpoint
+                  description: Id Waterpoints
                 name:
                   type: string
-                  description: waterpoint name
-                lat:
-                  type: float
-                  description: latitute of the waterpoint
-                lon:
-                  type: float
-                  description: longitude of the waterpoint
-                area:
-                  type: float
-                  description: area of the waterpoint
+                  description: Waterpoint name
                 ext_id:
-                  type: float
-                  description: external id of the waterpoint
+                  type: string
+                  description: Extern Id to identify Waterpoin
+                lat:
+                  type: number
+                  description: latitude of the Waterpoint
+                lon:
+                  type: number
+                  description: longityde of the Waterpoint
+                area:
+                  type: number
+                  description: area of the Waterpoint
                 watershed:
                   type: string
                   description: Id watershed
