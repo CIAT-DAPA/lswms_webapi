@@ -44,7 +44,7 @@ class MonitoredData(Resource):
         else:
             print(waterpoint)
             q_set = Monitored.objects(waterpoint = waterpoint)
-        json_data = [{"id": str(x.id), "date": x.date.isoformat(), "values": x.values} for x in q_set]
+        json_data = [{"id": str(x.id), "date": x.date.isoformat(), "values": x.values,"waterpointId":waterpoint} for x in q_set]
 
 
         return json_data
