@@ -40,5 +40,5 @@ class Watersheds(Resource):
         else:
             print(adm3)
             q_set = Watershed.objects(adm3 = adm3)
-        json_data = [{"id":str(x.id),"area":x.area,"adm3":str(x.adm3.id)} for x in q_set]
+        json_data = [{"name":x.name,"id":str(x.id),"area":x.area,"adm3":str(x.adm3.id)} for x in q_set]
         return json_data
