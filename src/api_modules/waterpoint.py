@@ -43,5 +43,5 @@ class Waterpoints(Resource):
         """
         q_set = None
         q_set= Waterpoint.objects()
-        json_data = [{"id":str(x.id),"name":x.name,"lat":x.lat,"lon":x.lon,"area":x.area,"ext_id":str(x.ext_id),"climatology":x.climatology,"watershed":str(x.watershed.id)} for x in q_set]
+        json_data = [{"id":str(x.id),"name":x.name,"lat":x.lat,"lon":x.lon,"area":x.area,"ext_id":str(x.ext_id),"climatology":x.climatology,"watershed":str(x.watershed.id),"aclimate_id":x.aclimate_id} for x in q_set]
         return json_data
