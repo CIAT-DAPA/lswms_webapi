@@ -103,6 +103,7 @@ class WaterpointsProfile(Resource):
                 "lat": waterpoint.lat,
                 "lon": waterpoint.lon,
                 "area": waterpoint.area,
+                "aclimate_id":waterpoint.aclimate_id,
                 "ext_id": str(waterpoint.ext_id),
                 "watershed": watershed_id,
                 "watershed_name": watershed_name,
@@ -111,7 +112,7 @@ class WaterpointsProfile(Resource):
                 "adm1": adm1.name,
                 "contents_wp": contents_list,
                 "contents_ws": contents_list_ws,
-
+                
             }
 
             json_data.append(waterpoint_data)
