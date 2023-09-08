@@ -43,8 +43,8 @@ api.add_resource(Waterpoints, '/api/v1/waterpoints')
 api.add_resource(SingleWaterpoints, '/api/v1/waterpoints/<waterpoint>')
 api.add_resource(MonitoredData, '/api/v1/monitored/<waterpoint>')
 api.add_resource(LastMonitoredData, '/api/v1/lastmonitored/<waterpoint>')
-api.add_resource(WaterpointsProfile, '/api/v1/waterpointsprofiles')
-api.add_resource(SingleWaterpointsProfile, '/api/v1/waterpointsprofiles/<waterpoint>')
+api.add_resource(WaterpointsProfile, '/api/v1/waterpointsprofiles/<language>')
+api.add_resource(SingleWaterpointsProfile, '/api/v1/waterpointsprofiles/<waterpoint>/<language>')
 
 
 

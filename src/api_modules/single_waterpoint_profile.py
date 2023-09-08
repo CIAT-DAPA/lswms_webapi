@@ -16,16 +16,20 @@ class SingleWaterpointsProfile(Resource):
     def __init__(self):
         super().__init__()
 
-    def get(self, waterpoint=None):
+    def get(self, waterpoint=None,language=None):
         """
-        Get all waterpoints profiles from database 
+        Get one waterpoint profile from database 
         ---
-        description: Query the information of the one waterpoints profile. This endpoint has not parameter.  This endpoint needs one parameter, **waterpoint** that is id of the waterpoint to be queried (this id can be obtained from the endpoint `/waterpoints`); The API will respond with the waterpoit profile with the id provided.
+        description: Query the information of the one waterpoints profile. This endpoint has not parameter.  This endpoint needs two parameters, **waterpoint** that is id of the waterpoint to be queried (this id can be obtained from the endpoint `/waterpoints`), and the **language** that is the language that you want to get; The API will respond with the waterpoit profile with the id provided.
         parameters:
           - in: path
             name: waterpoint
             type: string
             required: true
+          - in: path
+            name: language
+            type: string
+            required: false
         responses:    
           200:
             description: Waterpoints profiles
@@ -97,12 +101,12 @@ class SingleWaterpointsProfile(Resource):
 
             wp_contents = Wpcontent.objects(waterpoint=str(waterpoint.id))
             ws_contents = Wscontent.objects(watershed=str(waterpoint.watershed.id))
-            contents_list = [content.content for content in wp_contents]
+            contents_list = [content.content for content in wp_contents if 'language' in content.content and content.content['language'] == language]
             for content in contents_list:
-                if 'trace' in content:
-                    del content['trace']
+                  if 'trace' in content:
+                      del content['trace']
 
-            contents_list_ws = [content.content for content in ws_contents]
+            contents_list_ws = [content.content for content in ws_contents if 'language' in content.content and content.content['language'] == language]
             for content in contents_list_ws:
                 if 'trace' in content:
                     del content['trace']

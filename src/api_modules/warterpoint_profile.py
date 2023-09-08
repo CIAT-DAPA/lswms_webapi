@@ -16,7 +16,7 @@ class WaterpointsProfile(Resource):
     def __init__(self):
         super().__init__()
 
-    def get(self):
+    def get(self,language=None):
         """
         Get all waterpoints profiles from database 
         ---
@@ -24,6 +24,12 @@ class WaterpointsProfile(Resource):
         responses:    
           200:
             description: Waterpoints profiles
+        parameters:
+          - in: path
+            name: language
+            type: string
+            required: false
+            default: "en"
             schema:
               id: Waterpoints
               properties:
@@ -71,6 +77,7 @@ class WaterpointsProfile(Resource):
                   items:
                     type: string
         """
+        
         q_set = Waterpoint.objects()
         json_data = []
 
@@ -87,12 +94,13 @@ class WaterpointsProfile(Resource):
 
             wp_contents = Wpcontent.objects(waterpoint=str(waterpoint.id))
             ws_contents = Wscontent.objects(watershed=str(waterpoint.watershed.id))
-            contents_list = [content.content for content in wp_contents]
+            #contents_list = [content.content for content in wp_contents]
+            contents_list = [content.content for content in wp_contents if 'language' in content.content and content.content['language'] == language]
             for content in contents_list:
-                if 'trace' in content:
-                    del content['trace']
+                  if 'trace' in content:
+                      del content['trace']
 
-            contents_list_ws = [content.content for content in ws_contents]
+            contents_list_ws = [content.content for content in ws_contents if 'language' in content.content and content.content['language'] == language]
             for content in contents_list_ws:
                 if 'trace' in content:
                     del content['trace']
