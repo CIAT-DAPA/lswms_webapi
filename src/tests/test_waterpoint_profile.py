@@ -16,7 +16,7 @@ class Testwaterpointprofile(unittest.TestCase):
 
     def test_single_waterpointprofile_valid_id(self):
         # Test a valid waterpointprofile ID
-        response = self.app.get('http://127.0.0.1:5000/api/v1/waterpointsprofiles', headers={"Content-Type": "application/json"})
+        response = self.app.get('http://127.0.0.1:5000/api/v1/waterpointsprofiles/en', headers={"Content-Type": "application/json"})
         self.assertEqual(200, response.status_code)
         # Add more assertions to check the response content
 
