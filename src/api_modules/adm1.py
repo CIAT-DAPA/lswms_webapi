@@ -13,9 +13,12 @@ class AdministrativeLevel1(Resource):
         Get all Administrative levels 1 from database (zone)
         ---
         description: Query the information of all administrative levels 1 and the API will respond with the list of all regions, this endpoint has no parameters.
+        tags:
+          - Administrative levels
         responses:
           200:
             description: Administrative level 1
+            
             schema:
               id: Adm1
               properties:

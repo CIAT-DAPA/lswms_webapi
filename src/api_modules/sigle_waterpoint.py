@@ -13,11 +13,14 @@ class SingleWaterpoints(Resource):
         Get all one waterpoint from database 
         ---
         description: Query the information of the ons specific waterpoint. This endpoint needs one parameter, **waterpoint** that is id of the waterpoint to be queried (this id can be obtained from the endpoint `/waterpoints`); The API will respond with the waterpoit with the id provided.
+        tags:
+          - Waterpoint information
         parameters:
           - in: path
             name: waterpoint
             type: string
             required: true
+            description: waterpoint id to be query, for example 64d1bf1cc703fe54e05ee7d6
         responses:    
           200:
             description: Waterpoint
