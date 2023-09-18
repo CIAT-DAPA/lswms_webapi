@@ -28,7 +28,7 @@ swagger = Swagger(app)
 
 # Define tus endpoints en el orden deseado
 
-@app.route('/api/v1/home')
+@app.route('/')
 def home():
     return redirect("/apidocs")
 
