@@ -13,6 +13,8 @@ class Waterpoints(Resource):
         Get all waterpoints  from database 
         ---
         description: Query the information of the waterpoints. This endpoint has not parameter.
+        tags:
+          - Waterpoint information
         responses:    
           200:
             description: Waterpoints
