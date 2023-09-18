@@ -106,9 +106,9 @@ class SingleWaterpointsProfile(Resource):
                 adm1 = Adm1.objects.get(id=adminlevel1id)
 
                 wp_contents = Wpcontent.objects(waterpoint=str(waterpoint.id), 
-                                         content__trace__enable=True)
+                                         content__trace__enabled=True)
                 ws_contents = Wscontent.objects(watershed=str(waterpoint.watershed.id), 
-                                         content__trace__enable=True)
+                                         content__trace__enabled=True)
                 ids=[]
                 typecontent_name=[]
                 for i in wp_contents:
