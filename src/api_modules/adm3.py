@@ -13,11 +13,14 @@ class AdministrativeLevel3(Resource):
         Get all Administrative levels 3 from database (kebele)
         ---
         description: Query the information of the administrative levels 3 (kebele). This endpoint needs one parameter, **adm2** that is id of the administrative levels 2 (woreda) to be queried (this id can be obtained from the endpoint `/adm2`); The API will respond with the list of the kebeles from that specific woreda.
+        tags:
+          - Administrative levels
         parameters:
           - in: path
             name: adm2
             type: string
             required: true
+            description: adm2 id to be query, for example 64d1bec4f8b9461ac6ed74cb
         responses:    
           200:
             description: Administrative levels 3

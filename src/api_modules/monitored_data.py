@@ -12,11 +12,14 @@ class MonitoredData(Resource):
         Get all Monitored data
         ---
         description: Query the information of monitored data from one waterpoint . This endpoint needs one parameter, **waterpoint** that is id of the waterpoint to be queried (this id can be obtained from the endpoint `/waterpoint`); The API will respond with the list of the monitored values from that specific waterpoint.
+        tags:
+          - Waterpoint Monitored data
         parameters:
           - in: path
             name: waterpoint
             type: string
             required: true
+            description: waterpoint id to be query, for example 64d1bf1cc703fe54e05ee7d6
         responses:
           200:
             description: Monitored data
