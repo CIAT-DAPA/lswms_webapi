@@ -51,7 +51,7 @@ pip install -r requirements.txt
 5. Running api
 
 ````sh
-python api.py
+python wpapi.py
 ````
 
 ## Usage
