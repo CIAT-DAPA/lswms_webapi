@@ -1,6 +1,10 @@
 from flask import Flask, jsonify
 from flask_restful import Resource
 from ormWP import Waterpoint
+from ormWP import Watershed
+from ormWP import Adm3
+from ormWP import Adm2
+from ormWP import Adm1
 import json
 
 class SingleWaterpoints(Resource):
@@ -55,6 +59,33 @@ class SingleWaterpoints(Resource):
         else:
             print(waterpoint)
             q_set = Waterpoint.objects(id = waterpoint)
-        json_data = [{"id":str(x.id),"name":x.name,"lat":x.lat,"lon":x.lon,"area":x.area,"ext_id":str(x.ext_id),"climatology":x.climatology,"watershed":str(x.watershed.id),"aclimate_id":x.aclimate_id} for x in q_set]
+            json_data = []
+        for x in q_set:
+            watershed_id = str(x.watershed.id)
+            
+            watershed_info = Watershed.objects(id= watershed_id)
+            adm3=Adm3.objects(id= watershed_info[0].adm3.id)
+            adm2=Adm2.objects(id= adm3[0].adm2.id)
+            adm1=Adm1.objects(id= adm2[0].adm1.id)
+
+            print(adm3[0].name)
+            if watershed_info:
+                json_item = {
+                    "id": str(x.id),
+                    "name": x.name,
+                    "lat": x.lat,
+                    "lon": x.lon,
+                    "area": x.area,
+                    "ext_id": str(x.ext_id),
+                    "watershed": watershed_id,
+                    "watershed_name": watershed_info[0].name,
+                    "adm3":adm3[0].name,
+                    "adm2":adm2[0].name,
+                    "adm1":adm1[0].name,
+                    "climatology": x.climatology,
+                    "aclimate_id": x.aclimate_id
+                }
+            json_data.append(json_item)
+            
 
         return json_data
