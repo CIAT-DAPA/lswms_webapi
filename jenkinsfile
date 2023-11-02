@@ -31,21 +31,12 @@ pipeline {
                 script {
                     sshCommand remote: remote, command: """
                         cd /var/www/waterpointsapi/
-                        sudo kill -9 $(sudo ss -tuln | grep ':5000' | awk '{print $5}' | cut -d ':' -f 1)
-                        rm -fr api_backup_\$(date +"%Y%m%d")
-                        mv api api_backup_\$(date +"%Y%m%d")
-                        rm -fr releaseApi.zip
-                        curl -LOk https://github.com/CIAT-DAPA/lswms_webapi/releases/latest/download/releaseApi.zip
-                        unzip -o releaseApi.zip
-                        rm -fr releaseApi.zip
-                        mkdir api
-                        mv src/* api
-                        rm -fr src
+                        mkdir prueba
                     """
                 }
             }
         }
-        stage('Init Api') {
+        /* stage('Init Api') {
             steps {
                 script {
                     sshCommand remote: remote, command: """
@@ -59,7 +50,7 @@ pipeline {
                     """
                 }
             }
-        }
+        } */
     }
     
     post {
