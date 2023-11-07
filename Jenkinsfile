@@ -45,7 +45,7 @@ pipeline {
                 }
             }
         }
-        stage('Init Api') {
+        stage(' activate enviroment and install requirements') {
             steps {
                 script {
                     sshCommand remote: remote, command: """
@@ -53,6 +53,17 @@ pipeline {
                         source env/bin/activate
                         cd src
                         pip install -r requirements.txt
+                    """
+                }
+            }
+        }
+        stage('Init api') {
+            steps {
+                script {
+                    sshCommand remote: remote, command: """
+                        cd /var/www/waterpointsApi/api_WP
+                        source env/bin/activate
+                        cd src
                         export DEBUG=False
                         export PORT=5001
                         export CONNECTION_DB=mongodb://localhost:27017/waterpoints
@@ -61,7 +72,7 @@ pipeline {
                     """
                 }
             }
-        }
+        }       
     }
     
     post {
