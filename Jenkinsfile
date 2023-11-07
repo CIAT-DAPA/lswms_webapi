@@ -19,8 +19,8 @@ pipeline {
                     remote.allowAnyHosts = true
                     remote.identityFile = ssh_key
                     remote.user = ssh_key_USR
-                    remote.name = name
-                    remote.host = host
+                    remote.name = server_name
+                    remote.host = server_host
                     
                 }
             }
