@@ -36,7 +36,7 @@ pipeline {
                             rm -rf env
                         fi
                         cd /var/www/waterpointsApi/api_WP
-                        sudo kill -9 $(sudo ss -nepal | grep 5001 | awk -F 'pid=|,fd=' '{print $2}')
+                        sudo kill -9 $(sudo ss -nepal | grep 5001 | awk -F 'pid=|,fd=' '{print \$2}')
                         curl -LOk https://github.com/CIAT-DAPA/lswms_webapi/releases/latest/download/releaseApi.zip
                         unzip -o releaseApi.zip
                         rm -fr releaseApi.zip
