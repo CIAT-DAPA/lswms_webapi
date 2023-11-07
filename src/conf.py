@@ -10,7 +10,7 @@ if os.getenv('DEBUG', "true").lower() == "true":
 else:
     config['DEBUG'] = False
     config['HOST'] = '0.0.0.0'
-    config['PORT'] = os.getenv('API_SPCAT_PORT')
+    config['PORT'] = os.getenv('API_WP_PORT')
     config['CONNECTION_DB']=os.getenv('CONNECTION_DB')
 
     

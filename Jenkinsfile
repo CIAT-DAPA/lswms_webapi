@@ -6,52 +6,62 @@ pipeline {
     agent any
 
     environment {
-        user = credentials('wp_user')
-        host = credentials('wp_host')
-        name = credentials('wp_name')
+        server_name = credentials('wp_name')
+        server_host = credentials('wp_host')
         ssh_key = credentials('wp_devops')
     }
 
     stages {
-        stage('Ssh to connect Bigelow server') {
+        stage('Ssh to connect bigelow server') {
             steps {
                 script {
                     // Set up remote SSH connection parameters
                     remote.allowAnyHosts = true
                     remote.identityFile = ssh_key
-                    remote.user = user
+                    remote.user = ssh_key_USR
                     remote.name = name
                     remote.host = host
                     
                 }
             }
         }
-        stage('Download latest release') {
+        stage('Download latest release and create enviroment') {
             steps {
                 script {
                     sshCommand remote: remote, command: """
-                        cd /var/www/waterpointsapi/
-                        mkdir prueba
-                        rm -rf prueba
+                        cd /var/www/waterpointsApi
+                        if [ ! -d api_WP ]; then
+                            mkdir ./api_WP
+                            cd ./api_WP
+                            rm -rf env
+                        fi
+                        cd /var/www/waterpointsApi/api_WP
+                        sudo kill -9 \$(sudo netstat -nepal | grep 5000 | awk '{print \$9}' | awk -F '/' '{print \$1}')
+                        curl -LOk https://github.com/CIAT-DAPA/lswms_webapi/releases/latest/download/releaseApi.zip
+                        unzip -o releaseApi.zip
+                        rm -fr releaseApi.zip
+                        python3 -m venv env
                     """
                 }
             }
         }
-        /* stage('Init Api') {
+        stage('Init Api') {
             steps {
                 script {
                     sshCommand remote: remote, command: """
-                        cd /var/www/waterpointsapi/
+                        cd /var/www/waterpointsApi/api_WP
+                        source env/bin/activate
+                        cd src
+                        pip install -r requirements.txt
                         export DEBUG=False
-                        export PORT=5000
+                        export PORT=5001
                         export CONNECTION_DB=mongodb://localhost:27017/waterpoints
                         export HOST=0.0.0.0
-                        cd api/
-                        nohup python wpapi.py > log.txt 2>&1 &
+                        nohup python wp_api.py > log.txt 2>&1 &
                     """
                 }
             }
-        } */
+        }
     }
     
     post {
@@ -63,7 +73,7 @@ pipeline {
 
         success {
             script {
-                echo 'everything went very well!!'
+                echo 'everything went very well, api in production'
             }
         }
     }
