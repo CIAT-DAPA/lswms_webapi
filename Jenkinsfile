@@ -68,7 +68,7 @@ pipeline {
                         export PORT=5001
                         export CONNECTION_DB=mongodb://localhost:27017/waterpoints
                         export HOST=0.0.0.0
-                        nohup python wpapi.py > log.txt 2>&1 &
+                        nohup python3 wpapi.py > log.txt 2>&1 &
                     """
                 }
             }
