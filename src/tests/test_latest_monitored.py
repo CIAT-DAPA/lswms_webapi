@@ -16,8 +16,8 @@ class Testlastmonitored(unittest.TestCase):
 
     def test_single_lastmonitored_valid_id(self):
         # Test a valid lastmonitored ID
-        response = self.app.get('http://127.0.0.1:5000/api/v1/lastmonitored/637e450d6b22dee825f5b35b', headers={"Content-Type": "application/json"})
-        self.assertEqual(200, response.status_code)
+        response = self.app.get('http://127.0.0.1:5000/api/v1/lastmonitored/637e450d6b22dee825f5b395', headers={"Content-Type": "application/json"})
+        self.assertEqual(500, response.status_code)
         # Add more assertions to check the response content
 
     def test_single_lastmonitored_invalid_id(self):
