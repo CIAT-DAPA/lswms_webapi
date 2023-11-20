@@ -61,7 +61,6 @@ class Waterpoints(Resource):
             adm2=Adm2.objects(id= adm3[0].adm2.id)
             adm1=Adm1.objects(id= adm2[0].adm1.id)
 
-            print(adm3[0].name)
             if watershed_info:
                 json_item = {
                     "id": str(x.id),
@@ -75,7 +74,6 @@ class Waterpoints(Resource):
                     "adm3":adm3[0].name,
                     "adm2":adm2[0].name,
                     "adm1":adm1[0].name,
-                    "climatology": x.climatology,
                     "aclimate_id": x.aclimate_id
                 }
             json_data.append(json_item)
