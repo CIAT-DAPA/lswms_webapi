@@ -36,7 +36,7 @@ pipeline {
                         cd /var/www/waterpointsApi/api_WP
                         rm -rf env
                         rm -rf src
-                        sudo kill -9 \$(sudo ss -nepal | grep 5000 | awk '{print \$9}' | awk -F '/' '{print \$1}')
+                        kill -9 \$(lsof -t -i:5001)
                         curl -LOk https://github.com/CIAT-DAPA/lswms_webapi/releases/latest/download/releaseApi.zip
                         unzip -o releaseApi.zip
                         rm -fr releaseApi.zip

@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_restful import Resource
-from ormWP import Monitored
+from ormWP import Monitored, Wpcontent,Wscontent,Waterpoint
 import json
 
 class LastMonitoredData(Resource):
@@ -42,11 +42,32 @@ class LastMonitoredData(Resource):
                 
         """
         q_set = None
+        En=False
+        Am=False
+        Or=False
         if waterpoint is None:
             q_set = Monitored.objects()
         else:
             q_set = Monitored.objects(waterpoint=waterpoint).order_by('-date').limit(1)
-        
-        json_data = [{"id": str(x.id), "date": x.date.isoformat(), "values": x.values, "waterpointId": waterpoint} for x in q_set]
+            q_setWpC=Wpcontent.objects(waterpoint=waterpoint)
+            water_point_info=Waterpoint.objects(id=waterpoint)
+            q_setWsC=Wscontent.objects(watershed=water_point_info[0].watershed.id)
+            
+        for wsc in q_setWsC:
+            if(wsc.content['language']=='en'):
+                En=True
+            elif (wsc.content['language']=='or'):
+                Or=True
+            elif (wsc.content['language']=='am'):
+                Am=True
+
+        for wpc in q_setWsC:
+            if(wpc.content['language']=='en'):
+                En=True
+            elif (wpc.content['language']=='or'):
+                Or=True
+            elif (wpc.content['language']=='am'):
+                Am=True
+        json_data = [{"id": str(x.id), "date": x.date.isoformat(), "values": x.values, "waterpointId": waterpoint,"am": Am,"or": Or,"en": En} for x in q_set]
 
         return json_data
