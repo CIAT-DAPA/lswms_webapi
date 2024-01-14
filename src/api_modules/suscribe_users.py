@@ -24,13 +24,13 @@ class SuscribeUsers(Resource):
             schema:
               id: Suscription
               properties:
-                UserId:
+                userId:
                   type: string
                   description: Id of the User
-                Boletin:
+                boletin:
                   type: string
                   description: Boletin to suscribe
-                Waterpoint:
+                waterpoint:
                   type: string
                   description: id to waterpoint to suscribe              
         responses:
@@ -41,17 +41,26 @@ class SuscribeUsers(Resource):
         """
         try:
             data = request.get_json()
-            userId = data.get('UserId')
-            boletin = data.get('Boletin')
-            waterpoint = data.get('Waterpoint')
+            userId = data.get('userId')
+            boletin = data.get('boletin')
+            waterpoint = data.get('waterpoint')
+            boletin = data.get('boletin', None)
             print(data)
-            if userId is None or boletin is None or waterpoint is None:
+            if boletin!="alert" and boletin!="weekly" :
+                return ({"error": "Boletin must be alert or weekly"}), 400
+            else:
+                boletin = Boletin(boletin)
+                print(boletin)
+            suscription= Suscription.objects(userId=userId, boletin=boletin, waterpoint=waterpoint).first()
+            if suscription is not None:
+                return ({"error": "Suscription already exists"}), 400
+            if userId is "" or boletin is "" or waterpoint is "":
                 return ({"error": "UserId, Boletin and Waterpoint are required"}), 400
             trace={"created": datetime.now(), "updated": datetime.now(), "enabled": True}
             suscription = Suscription(userId=userId, boletin=boletin, waterpoint=waterpoint,trace=trace)	
             #print("UserId: ", str(userId), "Boletin: ", str(Boletin), "Waterpoint: ", str(Waterpoint))
             suscription.save()
-            return ({"Sucesfully": "created"+ " "+ userId +" "+ Boletin+" "}), 201
+            return ({"Sucesfully": "created"+ " "+ userId +" "+ str(boletin._value_)+" "}), 201
 
         except Exception as e:
             return ({"error": str(e)}), 500
