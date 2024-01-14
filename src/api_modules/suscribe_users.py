@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_restful import Api, Resource
-from ormWP import Adm1
+from ormWP import Suscription,Boletin
+from datetime import datetime
 import json
 
 
@@ -41,14 +42,15 @@ class SuscribeUsers(Resource):
         try:
             data = request.get_json()
             userId = data.get('UserId')
-            Boletin = data.get('Boletin')
-            Waterpoint = data.get('Waterpoint')
+            boletin = data.get('Boletin')
+            waterpoint = data.get('Waterpoint')
             print(data)
-            if userId is None or Boletin is None or Waterpoint is None:
+            if userId is None or boletin is None or waterpoint is None:
                 return ({"error": "UserId, Boletin and Waterpoint are required"}), 400
-
+            trace={"created": datetime.now(), "updated": datetime.now(), "enabled": True}
+            suscription = Suscription(userId=userId, boletin=boletin, waterpoint=waterpoint,trace=trace)	
             #print("UserId: ", str(userId), "Boletin: ", str(Boletin), "Waterpoint: ", str(Waterpoint))
-
+            suscription.save()
             return ({"Sucesfully": "created"+ " "+ userId +" "+ Boletin+" "}), 201
 
         except Exception as e:
