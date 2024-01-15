@@ -18,7 +18,7 @@ from api_modules.sigle_waterpoint import SingleWaterpoints
 from api_modules.monitored_data import MonitoredData
 from api_modules.waterpoint_profiles import SingleWaterpointsProfile
 from api_modules.monitored_latest  import LastMonitoredData
-from api_modules.suscribe_users import SuscribeUsers
+from api_modules.suscribe_users import SuscribeUsers, SusbcribeByUserId,SusbcribeBywaterpointId,Unsuscribeusers
 #from api_modules.layers import Layers
 
  
@@ -59,6 +59,10 @@ api.add_resource(SingleWaterpointsProfile, '/api/v1/waterpointsprofiles/<waterpo
 
 # Endpoint para SuscribeUsers
 api.add_resource(SuscribeUsers, '/api/v1/suscribe')
+
+api.add_resource(SusbcribeByUserId, '/api/v1/suscribe/get_suscription_by_user/<userId>')
+api.add_resource(SusbcribeBywaterpointId, '/api/v1/suscribe/get_suscription_by_waterpoint/<waterpointId>/<userId>')
+api.add_resource(Unsuscribeusers, '/api/v1/suscribe/unsubscribe/<waterpointId>/<suscriptionid>')
 if __name__ == '__main__':
     connect(host=config['CONNECTION_DB'])
     print("Connected DB")
