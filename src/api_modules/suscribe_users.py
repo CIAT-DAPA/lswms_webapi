@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_restful import Api, Resource
-from ormWP import Suscription,Boletin
+from ormWP import Suscription,Boletin,Waterpoint,Watershed,Adm1,Adm2,Adm3,Monitored
 from datetime import datetime
 import json
 
@@ -29,10 +29,10 @@ class SuscribeUsers(Resource):
                   description: Id of the User
                 boletin:
                   type: string
-                  description: Boletin to suscribe
+                  description: Boletin to subscribe
                 waterpoint:
                   type: string
-                  description: id to waterpoint to suscribe              
+                  description: id to waterpoint to subscribe              
         responses:
           201:
             description: Suscription created successfully
@@ -51,7 +51,7 @@ class SuscribeUsers(Resource):
                 return ({"error": "Boletin must be alert or weekly"}), 400
             else:
                 boletin = Boletin(boletin)
-            suscription= Suscription.objects(userId=userId, boletin=boletin).first()
+            suscription= Suscription.objects(userId=userId, boletin=boletin,trace__enabled=True).first()
             if suscription:
                 print(suscription.waterpoint)
                 if waterpoint in suscription.waterpoint:
@@ -69,16 +69,16 @@ class SuscribeUsers(Resource):
         except Exception as e:
             return ({"error": str(e)}), 500
 
-class SusbcribeByUserId(Resource):
+class SubscribeByUserId(Resource):
 
     def __init__(self):
         super().__init__()
 
     def get(self, userId=None):
         """
-        Get all User Suscriptions
+        Get all User Subscriptions
         ---
-        description: Get all User Suscriptions
+        description: Get all User Subscriptions
         tags:
           - Users
         parameters:
@@ -86,13 +86,13 @@ class SusbcribeByUserId(Resource):
             name: userId
             type: string
             required: true
-            description: userId to be query, for example 64d1be9c16bfd546aec4f58b
+            description: userId to be queried, for example, 64d1be9c16bfd546aec4f58b
 
         responses:
           200:
-            description: All User Suscriptions
+            description: All User Subscriptions
           404:
-            description: No User Suscriptions found
+            description: No User Subscriptions found
         """
         try:
             print(userId)
@@ -100,9 +100,37 @@ class SusbcribeByUserId(Resource):
             if userId is None:
                 q_set = Suscription.objects()
             else:
-                q_set = Suscription.objects(userId=userId,trace__enabled=True)
+                q_set = Suscription.objects(userId=userId, trace__enabled=True)
             
-            json_data = [{"user_id":str(x.userId),"id": str(x.id), "boletin": str(x.boletin._value_), "waterpoint": x.waterpoint} for x in q_set]
+            json_data = []
+            
+            for x in q_set:
+                waterpoint_info_list = Waterpoint.objects(id__in=x.waterpoint).all()
+                
+                waterpoint_data = []
+                for waterpoint_info in waterpoint_info_list:
+                    watershed_info = Watershed.objects(id=waterpoint_info.watershed.id).first()
+                    adm3=Adm3.objects(id=watershed_info.adm3.id).first()
+                    adm2=Adm2.objects(id=adm3.adm2.id).first()
+                    adm1=Adm1.objects(id=adm2.adm1.id).first()
+                    last__monitored = Monitored.objects(waterpoint=waterpoint_info.id).order_by('-date').limit(1)
+
+                    waterpoint_data.append({
+                        "id": str(waterpoint_info.id),
+                        "watershed_name": str(watershed_info.name),
+                        "adm3_name": str(adm3.name),
+                        "adm2_name": str(adm2.name),
+                        "adm1_name": str(adm1.name),
+                        "last_monitored_deph": float(last__monitored[0].values[0]["value"]) if last__monitored else None,                        
+                    })
+
+                data = {
+                    "user_id": str(x.userId),
+                    "id": str(x.id),
+                    "boletin": str(x.boletin._value_),
+                    "waterpoints": waterpoint_data
+                }
+                json_data.append(data)
             
             return json_data
 
@@ -116,9 +144,9 @@ class SusbcribeBywaterpointId(Resource):
 
     def get(self, waterpointId=None, userId=None):
         """
-        Get all waterpoint Suscriptions
+        Get all waterpoint Subscriptions by user and waterpoint
         ---
-        description: Get all User Suscriptions by waterpoint
+        description: Get all User Subscriptions by user and waterpoint
         tags:
           - Users
         parameters:
@@ -135,9 +163,9 @@ class SusbcribeBywaterpointId(Resource):
 
         responses:
           200:
-            description: All User Suscriptions
+            description: All User Subscriptions
           404:
-            description: No User Suscriptions found
+            description: No User Subscriptions found
         """
         try:
             q_set = None
@@ -160,11 +188,11 @@ class Unsuscribeusers(Resource):
     def __init__(self):
         super().__init__()
 
-    def patch(self, waterpointId=None, suscriptionid=None):
+    def patch(self, waterpointId=None, subscriptionid=None):
         """
-        Unsiscibe a user from a waterpoint
+        Unsubscribe a user from a waterpoint
         ---
-        description: unsiscibe a user from a waterpoint
+        description: Unsubscribe a user from a waterpoint
         tags:
           - Users
         parameters:
@@ -174,10 +202,10 @@ class Unsuscribeusers(Resource):
             required: true
             description: waterpointId to be query, for example 64d1be9c16bfd546aec4f58b
           - in: path
-            name: suscriptionid
+            name: subscriptionid
             type: string
             required: true
-            description: suscriptionid to be query, for example 64d1be9c16bfd546aec4f58b
+            description: subscription id to be query, for example 64d1be9c16bfd546aec4f58b
 
         responses:
           200:
@@ -186,8 +214,8 @@ class Unsuscribeusers(Resource):
             description: No User Suscriptions found
         """
         try:
-            if suscriptionid is not None:
-                q_set = Suscription.objects(id=str(suscriptionid),trace__enabled=True).first()
+            if subscriptionid is not None:
+                q_set = Suscription.objects(id=str(subscriptionid),trace__enabled=True).first()
 
                 if q_set is not None:
                     if str(waterpointId) in q_set.waterpoint:

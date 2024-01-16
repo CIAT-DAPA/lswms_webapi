@@ -18,8 +18,8 @@ from api_modules.sigle_waterpoint import SingleWaterpoints
 from api_modules.monitored_data import MonitoredData
 from api_modules.waterpoint_profiles import SingleWaterpointsProfile
 from api_modules.monitored_latest  import LastMonitoredData
-from api_modules.suscribe_users import SuscribeUsers, SusbcribeByUserId,SusbcribeBywaterpointId,Unsuscribeusers
-#from api_modules.layers import Layers
+from api_modules.suscribe_users import SuscribeUsers, SubscribeByUserId,SusbcribeBywaterpointId,Unsuscribeusers
+from api_modules.dialy_update import ProtectedEndpoint
 
  
 app = Flask(__name__)
@@ -58,11 +58,12 @@ api.add_resource(LastMonitoredData, '/api/v1/lastmonitored/<waterpoint>')
 api.add_resource(SingleWaterpointsProfile, '/api/v1/waterpointsprofiles/<waterpoints>/<language>')
 
 # Endpoint para SuscribeUsers
-api.add_resource(SuscribeUsers, '/api/v1/suscribe')
+api.add_resource(SuscribeUsers, '/api/v1/subscribe')
 
-api.add_resource(SusbcribeByUserId, '/api/v1/suscribe/get_suscription_by_user/<userId>')
-api.add_resource(SusbcribeBywaterpointId, '/api/v1/suscribe/get_suscription_by_waterpoint/<waterpointId>/<userId>')
-api.add_resource(Unsuscribeusers, '/api/v1/suscribe/unsubscribe/<waterpointId>/<suscriptionid>')
+api.add_resource(SubscribeByUserId, '/api/v1/subscribe/get_susbcription_by_user/<userId>')
+api.add_resource(SusbcribeBywaterpointId, '/api/v1/subscribe/get_subscription_by_waterpoint/<waterpointId>/<userId>')
+api.add_resource(Unsuscribeusers, '/api/v1/subscribe/unsubscribe/<waterpointId>/<subscriptionid>')
+api.add_resource(ProtectedEndpoint, '/api/v1/monitored/dialy_update')
 if __name__ == '__main__':
     connect(host=config['CONNECTION_DB'])
     print("Connected DB")
