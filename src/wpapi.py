@@ -60,7 +60,7 @@ api.add_resource(SingleWaterpointsProfile, '/api/v1/waterpointsprofiles/<waterpo
 # Endpoint para SuscribeUsers
 api.add_resource(SuscribeUsers, '/api/v1/subscribe')
 
-api.add_resource(SubscribeByUserId, '/api/v1/subscribe/get_susbcription_by_user/<userId>')
+api.add_resource(SubscribeByUserId, '/api/v1/subscribe/get_subscription_by_user/<userId>')
 api.add_resource(SusbcribeBywaterpointId, '/api/v1/subscribe/get_subscription_by_waterpoint/<waterpointId>/<userId>')
 api.add_resource(Unsuscribeusers, '/api/v1/subscribe/unsubscribe/<waterpointId>/<subscriptionid>')
 api.add_resource(ProtectedEndpoint, '/api/v1/monitored/dialy_update')

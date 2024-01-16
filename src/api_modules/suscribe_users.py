@@ -117,11 +117,13 @@ class SubscribeByUserId(Resource):
 
                     waterpoint_data.append({
                         "id": str(waterpoint_info.id),
-                        "watershed_name": str(watershed_info.name),
+                        "waterpoint_name": str(waterpoint_info.name),
                         "adm3_name": str(adm3.name),
                         "adm2_name": str(adm2.name),
                         "adm1_name": str(adm1.name),
-                        "last_monitored_deph": float(last__monitored[0].values[0]["value"]) if last__monitored else None,                        
+                        "last_monitored_deph": float(last__monitored[0].values[0]["value"]) if last__monitored else None, 
+                        "last_monitored_scaled_depth": float(last__monitored[0].values[3]["value"]) if last__monitored else None                      
+
                     })
 
                 data = {
