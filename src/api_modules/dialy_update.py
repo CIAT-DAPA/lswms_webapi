@@ -5,7 +5,7 @@ import os
 from ormWP import Waterpoint, Monitored
 
 
-API_KEY = os.getenv("key")
+API_KEY = "prueba"
 
 class ProtectedEndpoint(Resource):
     def __init__(self):
@@ -13,20 +13,20 @@ class ProtectedEndpoint(Resource):
 
     def post(self):
         """
-        Procesar un DataFrame protegido por una clave de autenticación.
+        Update the database with new data.
 
         ---
         tags:
-          - DataFrame
+          - ETL
         parameters:
           - in: header
             name: Authorization
             type: string
             required: true
-            description: Clave de autenticación en el formato "Bearer tu_clave_secreta"
+            description: Password in format "Bearer secret_key"
           - in: body
-            name: dataframe
-            description: DataFrame en formato JSON
+            name: json
+            description: DataFrame in JSON
             required: true
             schema:
               type: object
@@ -34,11 +34,11 @@ class ProtectedEndpoint(Resource):
 
         responses:
           200:
-            description: DataFrame recibido y procesado con éxito
+            description: Data updated successfully
           401:
-            description: Unauthorized - Clave de autenticación inválida o faltante
+            description: Unauthorized - Invalid or missing password
           500:
-            description: Error interno del servidor al procesar el DataFrame
+            description: Internal server error
         """
         try:
             # Verificar la autenticación mediante la clave en el header
@@ -54,6 +54,7 @@ class ProtectedEndpoint(Resource):
             data = request.get_json()
             df = pd.DataFrame(data)
             df['date'] = pd.to_datetime(df['date'], unit='ms')
+            print(df)
             def etl_monitored(df):
               count=0
               print('importing monitored waterpoint to the database')

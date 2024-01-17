@@ -20,7 +20,7 @@ from api_modules.waterpoint_profiles import SingleWaterpointsProfile
 from api_modules.monitored_latest  import LastMonitoredData
 from api_modules.suscribe_users import SuscribeUsers, SubscribeByUserId,SusbcribeBywaterpointId,Unsuscribeusers
 from api_modules.dialy_update import ProtectedEndpoint
-
+from api_modules.update_climatology import ProtectedEndpointClimatology
  
 app = Flask(__name__)
 CORS(app)
@@ -64,6 +64,7 @@ api.add_resource(SubscribeByUserId, '/api/v1/subscribe/get_subscription_by_user/
 api.add_resource(SusbcribeBywaterpointId, '/api/v1/subscribe/get_subscription_by_waterpoint/<waterpointId>/<userId>')
 api.add_resource(Unsuscribeusers, '/api/v1/subscribe/unsubscribe/<waterpointId>/<subscriptionid>')
 api.add_resource(ProtectedEndpoint, '/api/v1/monitored/dialy_update')
+api.add_resource(ProtectedEndpointClimatology, '/api/v1/monitored/update_climatology')
 if __name__ == '__main__':
     connect(host=config['CONNECTION_DB'])
     print("Connected DB")
