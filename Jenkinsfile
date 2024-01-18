@@ -68,6 +68,7 @@ pipeline {
                         export API_WP_PORT=5001
                         export CONNECTION_DB=mongodb://localhost:27017/waterpoints
                         export HOST=0.0.0.0
+                        export API_KEY=$(cat /var/www/key.txt)
                         nohup python3 wpapi.py > log.txt 2>&1 &
                     """
                 }

@@ -3,6 +3,7 @@ import os
 config = {}
 
 if os.getenv('DEBUG', "true").lower() == "true":
+    config['API_KEY'] = 'prueba'
     config['DEBUG'] = True
     config['HOST'] = 'localhost'
     config['PORT'] = 5000
@@ -12,5 +13,6 @@ else:
     config['HOST'] = '0.0.0.0'
     config['PORT'] = os.getenv('API_WP_PORT')
     config['CONNECTION_DB']=os.getenv('CONNECTION_DB')
+    config['API_KEY'] = os.getenv('API_KEY')
 
     
