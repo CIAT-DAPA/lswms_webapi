@@ -3,9 +3,11 @@ from flask_restful import Resource, Api
 import pandas as pd
 import os
 from ormWP import Waterpoint, Monitored
+from conf import config
 
 
-API_KEY = "prueba"
+API_KEY = config['API_KEY']
+
 
 class ProtectedEndpointClimatology(Resource):
     def __init__(self):
@@ -30,7 +32,11 @@ class ProtectedEndpointClimatology(Resource):
             required: true
             schema:
               type: object
-              example: {"col1": [1, 2, 3], "col2": ["A", "B", "C"]}
+              examples:
+                example-1:
+                  value: {"location_id": 1, "date": 1614556800000, "rain": 0.0, "evap": 0.0, "depth": 0.0, "scaled_depth": 0.0}
+
+
 
         responses:
           200:
