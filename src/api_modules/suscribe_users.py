@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_restful import Api, Resource
 from ormWP import Suscription,Boletin,Waterpoint,Watershed,Adm1,Adm2,Adm3,Monitored
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 
 
@@ -113,16 +113,18 @@ class SubscribeByUserId(Resource):
                     adm3=Adm3.objects(id=watershed_info.adm3.id).first()
                     adm2=Adm2.objects(id=adm3.adm2.id).first()
                     adm1=Adm1.objects(id=adm2.adm1.id).first()
-                    last__monitored = Monitored.objects(waterpoint=waterpoint_info.id).order_by('-date').limit(1)
-
+                    start_date = datetime.now() - timedelta(days=10)
+                    start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
+                    last_monitored = Monitored.objects(waterpoint=waterpoint_info.id, date__gte=start_date).order_by('-date').limit(1).first()
+                    print(last_monitored.values)
                     waterpoint_data.append({
                         "id": str(waterpoint_info.id),
                         "waterpoint_name": str(waterpoint_info.name),
                         "adm3_name": str(adm3.name),
                         "adm2_name": str(adm2.name),
                         "adm1_name": str(adm1.name),
-                        "last_monitored_deph": float(last__monitored[0].values[0]["value"]) if last__monitored else None, 
-                        "last_monitored_scaled_depth": float(last__monitored[0].values[3]["value"]) if last__monitored else None                      
+                        "last_monitored_deph": float(last_monitored.values[0]["value"]) if last_monitored else None, 
+                        "last_monitored_scaled_depth": float(last_monitored.values[3]["value"]) if last_monitored else None                      
 
                     })
 
