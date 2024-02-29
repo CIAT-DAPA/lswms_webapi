@@ -113,10 +113,22 @@ class SubscribeByUserId(Resource):
                     adm3=Adm3.objects(id=watershed_info.adm3.id).first()
                     adm2=Adm2.objects(id=adm3.adm2.id).first()
                     adm1=Adm1.objects(id=adm2.adm1.id).first()
-                    start_date = datetime.now() - timedelta(days=10)
+                    start_date = datetime.now() - timedelta(days=50)
                     start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
                     last_monitored = Monitored.objects(waterpoint=waterpoint_info.id, date__gte=start_date).order_by('-date').limit(1).first()
-                    print(last_monitored.values)
+                    date_formated = datetime.strptime(str(last_monitored.date), "%Y-%m-%d %H:%M:%S")
+                    water=waterpoint_info.climatology
+                    target_month = date_formated.month
+                    target_day = date_formated.day
+                    climate=None
+                    for daily_data in water:
+                        if daily_data[0]['month'] == target_month and daily_data[0]['day'] == target_day:
+                            climate=daily_data
+                            values=climate[0]['values']
+                            values_climatology={}
+                            values_climatology=[{"type":"climatology_"+ element["type"],"value":element["value"]} for element in values]
+                            break
+
                     waterpoint_data.append({
                         "id": str(waterpoint_info.id),
                         "waterpoint_name": str(waterpoint_info.name),
@@ -124,7 +136,9 @@ class SubscribeByUserId(Resource):
                         "adm2_name": str(adm2.name),
                         "adm1_name": str(adm1.name),
                         "last_monitored_deph": float(last_monitored.values[0]["value"]) if last_monitored else None, 
-                        "last_monitored_scaled_depth": float(last_monitored.values[3]["value"]) if last_monitored else None                      
+                        "last_monitored_scaled_depth": float(last_monitored.values[3]["value"]) if last_monitored else None,
+                        "climatology_depth": values_climatology[0]["value"] if climate else "No data available",
+                        "climatology_scaled_depth": values_climatology[3]["value"] if climate else "No data available",
 
                     })
 
