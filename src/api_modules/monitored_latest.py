@@ -86,7 +86,6 @@ class LastMonitoredData(Resource):
         json_data = []
         
         for x in q_set:
-            # Busca los datos climatológicos correspondientes a la fecha del monitoreo
             climatology_data = find_date_in_climatology(water.climatology, x.date.isoformat())
             x.values.append(climatology_data)
             if climatology_data:
