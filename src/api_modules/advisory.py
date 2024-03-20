@@ -66,11 +66,11 @@ class Advisory(Resource):
         data = request.get_json()
 
         advisory = data.get('advisory')
-        print(Status.__members__)
+        print(AdvisoryEnum.__members__)
         if advisory:
             if advisory[0].islower():
                 advisory = advisory.capitalize()
-        if advisory in Status.__members__:
+        if advisory in AdvisoryEnum.__members__:
             print(f"passss")
             pass
         else:
