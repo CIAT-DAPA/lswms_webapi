@@ -36,11 +36,13 @@ class Advisory(Resource):
             schema:
               type: object
               properties:
-                advisory:
-                  type: string
-                  example: "good"
-                  description: "status of the waterpoint exaample, good watch, near dry, seasonal dry"
                 waterpoints:
+                  type: array
+                  items:
+                    type: string
+                    properties:
+                  description: "List of the waterpoints and the status" 
+                advisorys:
                   type: array
                   items:
                     type: string
@@ -65,16 +67,17 @@ class Advisory(Resource):
         """
         data = request.get_json()
 
-        advisory = data.get('advisory')
+        advisorys = data.get('advisorys')
         print(AdvisoryEnum.__members__)
-        if advisory:
-            if advisory[0].islower():
-                advisory = advisory.capitalize()
-        if advisory in AdvisoryEnum.__members__:
-            print(f"passss")
-            pass
+        if advisorys:
+            advisorys = [advisory.capitalize() for advisory in advisorys]
+
+            for advisory in advisorys:
+                if advisory not in AdvisoryEnum.__members__:
+                    return {"error": f"Invalid advisory: {advisory}"}, 400
         else:
-            return {"error": "Invalid advisory"}, 400
+            return {"error": "No advisorys provided"}, 400
+
         json_data = []
         waterpoints = data.get('waterpoints')
         for waterpoint in waterpoints:
@@ -103,8 +106,9 @@ class Advisory(Resource):
                 current_state = "Alert"
             else:
                 current_state = "Near_dry"
-            if current_state == advisory and current_state in AdvisoryEnum.__members__:
-                json_data.append({"waterpoint": waterpoint, "advisory": AdvisoryEnum[advisory].value})
+            if current_state in advisorys and current_state in AdvisoryEnum.__members__:
+                json_data.append({"waterpointid": waterpoint, "advisory": AdvisoryEnum[current_state].value,"type_advisory":AdvisoryEnum[current_state].name})
+                
         return jsonify(json_data)
 
 
