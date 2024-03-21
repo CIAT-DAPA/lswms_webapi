@@ -21,6 +21,7 @@ from api_modules.monitored_latest  import LastMonitoredData
 from api_modules.suscribe_users import SuscribeUsers, SubscribeByUserId,SusbcribeBywaterpointId,Unsuscribeusers
 from api_modules.dialy_update import ProtectedEndpoint
 from api_modules.pixelvalue import Coordinates
+from api_modules.advisory import Advisory
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
@@ -64,6 +65,7 @@ api.add_resource(SusbcribeBywaterpointId, '/api/v1/subscribe/get_subscription_by
 api.add_resource(Unsuscribeusers, '/api/v1/subscribe/unsubscribe/<waterpointId>/<subscriptionid>')
 api.add_resource(ProtectedEndpoint, '/api/v1/monitored/dialy_update')
 api.add_resource(Coordinates, '/api/v1/pixelvalue')
+api.add_resource(Advisory, '/api/v1/advisory')
 if __name__ == '__main__':
     connect(host=config['CONNECTION_DB'])
     print("Connected DB")
