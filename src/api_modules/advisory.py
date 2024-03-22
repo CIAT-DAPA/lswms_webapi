@@ -37,7 +37,7 @@ class Advisory(Resource):
         """
         Get advisory.
         ---
-        description: Query the information of waterpoints that match the specified advisory. This endpoint needs three parameters, **advisory**, **waterpoints**, and **language**. The API will respond with the list of waterpoints that match the specified advisory in the specified language, the waterpoints Id can be obtained in `/waterpoint` endpoint and the status only can be good,alert,watch,near_dry,seasonal_dry, and the language only can be `or`(oromo),`en`(english) and `am`(ahmaric).
+        description: Query the information of waterpoints that match the specified advisory. This endpoint needs three parameters, **wp_status**, **waterpoints**, and **language**. The API will respond with the list of waterpoints that match the specified advisory in the specified language, the waterpoints Id can be obtained in `/waterpoint` endpoint and the wp_status only can be good,alert,watch,near_dry,seasonal_dry, and the language only can be `or`(oromo),`en`(english) and `am`(ahmaric).
         tags:
           - Advisory
         parameters:
@@ -53,7 +53,7 @@ class Advisory(Resource):
                     type: string
                     properties:
                   description: "List of the waterpoints and the status"
-                advisorys:
+                wp_status:
                   type: array
                   items:
                     type: string
@@ -82,7 +82,7 @@ class Advisory(Resource):
         """
         data = request.get_json()
 
-        advisorys = data.get('advisorys')
+        wp_status = data.get('wp_status')
         language = data.get('language')  # Read the language parameter
         
         if language == 'en':
@@ -94,14 +94,14 @@ class Advisory(Resource):
         else:
             return {"error": f"Language '{language}' not supported"}, 400
         
-        if advisorys:
-            advisorys = [advisory.capitalize() for advisory in advisorys]
+        if wp_status:
+            wp_status = [wp_statu.capitalize() for wp_statu in wp_status]
 
-            for advisory in advisorys:
-                if advisory not in [enum.name for enum in advisory_text]:
-                    return {"error": f"Invalid advisory: {advisory}"}, 400
+            for wp_statu in wp_status:
+                if wp_statu not in [enum.name for enum in advisory_text]:
+                    return {"error": f"Invalid advisory: {wp_statu}"}, 400
         else:
-            return {"error": "No advisorys provided"}, 400
+            return {"error": "No wp_status provided"}, 400
 
         json_data = []
         waterpoints = data.get('waterpoints')
@@ -132,7 +132,7 @@ class Advisory(Resource):
             else:
                 current_state = "Near_dry"
                 
-            if current_state in advisorys:
+            if current_state in wp_status:
                 json_data.append({"waterpointid": waterpoint, "advisory": advisory_text[current_state].value, "type_advisory": current_state})
                 
         return jsonify(json_data)
