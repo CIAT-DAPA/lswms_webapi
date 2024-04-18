@@ -53,7 +53,6 @@ class SuscribeUsers(Resource):
                 boletin = Boletin(boletin)
             suscription= Suscription.objects(userId=userId, boletin=boletin,trace__enabled=True).first()
             if suscription:
-                print(suscription.waterpoint)
                 if waterpoint in suscription.waterpoint:
                   return ({"error": "Suscription already exists"}), 400
                 else:
@@ -95,12 +94,12 @@ class SubscribeByUserId(Resource):
             description: No User Subscriptions found
         """
         try:
-            print(userId)
             q_set = None
             if userId is None:
                 q_set = Suscription.objects()
             else:
                 q_set = Suscription.objects(userId=userId, trace__enabled=True)
+                
             
             json_data = []
             
@@ -113,7 +112,7 @@ class SubscribeByUserId(Resource):
                     adm3=Adm3.objects(id=watershed_info.adm3.id).first()
                     adm2=Adm2.objects(id=adm3.adm2.id).first()
                     adm1=Adm1.objects(id=adm2.adm1.id).first()
-                    start_date = datetime.now() - timedelta(days=50)
+                    start_date = datetime.now() - timedelta(days=200)
                     start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
                     last_monitored = Monitored.objects(waterpoint=waterpoint_info.id, date__gte=start_date).order_by('-date').limit(1).first()
                     date_formated = datetime.strptime(str(last_monitored.date), "%Y-%m-%d %H:%M:%S")
@@ -141,7 +140,6 @@ class SubscribeByUserId(Resource):
                         "climatology_scaled_depth": values_climatology[3]["value"] if climate else "No data available",
 
                     })
-
                 data = {
                     "user_id": str(x.userId),
                     "id": str(x.id),
@@ -149,7 +147,6 @@ class SubscribeByUserId(Resource):
                     "waterpoints": waterpoint_data
                 }
                 json_data.append(data)
-            
             return json_data
 
         except Exception as e:
