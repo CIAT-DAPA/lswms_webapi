@@ -53,7 +53,6 @@ class SuscribeUsers(Resource):
                 boletin = Boletin(boletin)
             suscription= Suscription.objects(userId=userId, boletin=boletin,trace__enabled=True).first()
             if suscription:
-                print(suscription.waterpoint)
                 if waterpoint in suscription.waterpoint:
                   return ({"error": "Suscription already exists"}), 400
                 else:
@@ -95,12 +94,12 @@ class SubscribeByUserId(Resource):
             description: No User Subscriptions found
         """
         try:
-            print(userId)
             q_set = None
             if userId is None:
                 q_set = Suscription.objects()
             else:
                 q_set = Suscription.objects(userId=userId, trace__enabled=True)
+                
             
             json_data = []
             
@@ -141,7 +140,6 @@ class SubscribeByUserId(Resource):
                         "climatology_scaled_depth": values_climatology[3]["value"] if climate else "No data available",
 
                     })
-
                 data = {
                     "user_id": str(x.userId),
                     "id": str(x.id),
@@ -149,7 +147,6 @@ class SubscribeByUserId(Resource):
                     "waterpoints": waterpoint_data
                 }
                 json_data.append(data)
-            
             return json_data
 
         except Exception as e:

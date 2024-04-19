@@ -8,6 +8,7 @@ from ormWP import Watershed
 from ormWP import Wpcontent
 from ormWP import Wscontent
 from  ormWP import Typecontent
+from ormWP import Monitored
 from mongoengine import Q
 
 
@@ -95,6 +96,15 @@ class SingleWaterpointsProfile(Resource):
         for waterpoint_id in waterpointlists:
             q_set = Waterpoint.objects(id=waterpoint_id)
             for waterpoint in q_set:
+                climatology = waterpoint.climatology
+                monitored=Monitored.objects(waterpoint=waterpoint.id).order_by('-date').limit(1).first()
+                target_day = monitored.date.day
+                target_month = monitored.date.month
+                climatology_data = None
+                for item in climatology:
+                    if item[0]['month'] == target_month and item[0]['day'] == target_day:
+                        climatology_data = item
+                        break
                 watershed_id = str(waterpoint.watershed.id)
                 watershed = Watershed.objects(id=watershed_id).first()
                 adminlevel3id = watershed.adm3.id
@@ -171,6 +181,9 @@ class SingleWaterpointsProfile(Resource):
                     "adm1": adm1.name,
                     "contents_wp": filtered_contents,
                     "contents_ws": filtered_contentsws,
+                    "climatology_scaled_depth": climatology_data[0]["values"][3]["value"],
+                    "latest_monitored_scaled_depth" : monitored.values[3]['value'],
+
                 }
 
                 json_data.append(waterpoint_data)
