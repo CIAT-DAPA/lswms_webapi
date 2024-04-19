@@ -112,7 +112,7 @@ class SubscribeByUserId(Resource):
                     adm3=Adm3.objects(id=watershed_info.adm3.id).first()
                     adm2=Adm2.objects(id=adm3.adm2.id).first()
                     adm1=Adm1.objects(id=adm2.adm1.id).first()
-                    start_date = datetime.now() - timedelta(days=200)
+                    start_date = datetime.now() - timedelta(days=50)
                     start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
                     last_monitored = Monitored.objects(waterpoint=waterpoint_info.id, date__gte=start_date).order_by('-date').limit(1).first()
                     date_formated = datetime.strptime(str(last_monitored.date), "%Y-%m-%d %H:%M:%S")
