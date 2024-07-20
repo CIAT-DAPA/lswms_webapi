@@ -19,10 +19,10 @@ class AdvisoryEnum_AM(Enum):
 
 
 class AdvisoryEnum_Oromo(Enum):
-    Good = 'Hagayaan hunda qabduun sii dhiyaatee. Miidiyaan namoota akkaataa barbaadan hirmaannee jira.'
-    Watch = 'Hagayaa hunda qabduun sii dhiyaate. Miidiyaan namoota akkaataa barbaachisuun barbaaddeebi’uu hunda keessatti akka dandeettii hirmaannee jira.'
-    Alert = 'Hagayaan hunda qabduun sii dhiyaate. Hunda keenyaan namoota akkaataa barbaaddeebi’uu dandeettii jiran keessaa bara ministeeraa hundaa dandeessan.'
-    Seasonal_dry = 'Hagayaan hunda qabduun sii dhiyaatee. Daandiiwwaan isaa ‘ponds’ akkaanuma barbaachisaa barbaadan dabalatee jira.'
+    Good = 'Haroon  haala dansaa irra jira. Kanafuu bishaani kana seeran dhimmoota adda addaaf itti fayyadamu.'
+    Watch = 'Haroon  xiqqachaa jira. Kanafuu bishaani dhimmotaa adda addaaf itti fayyadamnu hir’isuu akkasumass abbaan herregaa hordofi tasisuu qaba.'
+    Alert = 'Haroon  akka maale xiqqatee jira. Kanafuu bishaan kana dhugaatii fi beellada dadhaboo qofaaf fayyadamu.'
+    Seasonal_dry = 'Haroon  gogee/foqaate jira. kanafuu ummatini gara bishaan jirutii godanuu qabu.'
     Near_dry = 'Hagayaan hunda qabduun sii dhiyaatee. Miidiyaan namoota akkaataa barbaadan hirmaannee jira.'
 
 
