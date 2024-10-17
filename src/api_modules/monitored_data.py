@@ -43,7 +43,7 @@ class MonitoredData(Resource):
         """
         q_set = None
         if waterpoint is None:
-            q_set = Monitored.objects()
+            q_set = Monitored.objects(trace__enabled=True)
         else:
             print(waterpoint)
             q_set = Monitored.objects(waterpoint = waterpoint)

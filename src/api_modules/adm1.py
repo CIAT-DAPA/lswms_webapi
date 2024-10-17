@@ -33,7 +33,7 @@ class AdministrativeLevel1(Resource):
                   description: Extern Id to identify Administrative level 1
         """
         q_set = None
-        q_set = Adm1.objects()
+        q_set = Adm1.objects(trace__enabled=True)
         json_data = [{"id":str(x.id),"name":x.name,"ext_id":x.ext_id} for x in q_set]
         return json_data
 
