@@ -42,7 +42,7 @@ class AdministrativeLevel3(Resource):
         """
         q_set = None
         if adm2 is None:
-            q_set = Adm3.objects()
+            q_set = Adm3.objects(trace__enabled=True)
         else:
             q_set = Adm3.objects(adm2 = adm2)
         json_data = [{"id":str(x.id),"name":x.name,"ext_id":x.ext_id,"adm2":str(x.adm2.id)} for x in q_set]

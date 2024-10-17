@@ -49,7 +49,7 @@ class Waterpoints(Resource):
                   description: Id watershed
         """
         q_set = None
-        q_set= Waterpoint.objects()
+        q_set= Waterpoint.objects(trace__enabled=True)
 
         json_data = []
 
