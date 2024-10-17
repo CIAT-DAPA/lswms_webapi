@@ -55,7 +55,7 @@ class SingleWaterpoints(Resource):
         """
         q_set = None
         if waterpoint is None:
-            q_set = Waterpoint.objects()
+            q_set = Waterpoint.objects(trace__enabled=True)
         else:
             print(waterpoint)
             q_set = Waterpoint.objects(id = waterpoint)
