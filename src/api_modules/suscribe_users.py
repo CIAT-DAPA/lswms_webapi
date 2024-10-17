@@ -104,7 +104,7 @@ class SubscribeByUserId(Resource):
             json_data = []
             
             for x in q_set:
-                waterpoint_info_list = Waterpoint.objects(id__in=x.waterpoint).all()
+                waterpoint_info_list = Waterpoint.objects(id__in=x.waterpoint,trace__enabled=True).all()
                 
                 waterpoint_data = []
                 for waterpoint_info in waterpoint_info_list:
