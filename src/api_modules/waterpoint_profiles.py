@@ -182,6 +182,7 @@ class SingleWaterpointsProfile(Resource):
                     "contents_wp": filtered_contents,
                     "contents_ws": filtered_contentsws,
                     "climatology_scaled_depth": climatology_data[0]["values"][3]["value"],
+                    "climatology_depth": climatology_data[0]["values"][0]["value"],
                     "latest_monitored_scaled_depth" : monitored.values[3]['value'],
                     "depth":monitored.values[0]['value']
                   
