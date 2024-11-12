@@ -73,7 +73,20 @@ pipeline {
                     """
                 }
             }
-        }       
+        } 
+
+        stage('Run Seeder File') {
+            steps {
+                script {
+                    sshCommand remote: remote, command: """
+                        cd /var/www/waterpointsApi/api_WP
+                        source env/bin/activate
+                        cd src/seeder
+                        python3 woredas_seeder.py
+                    """
+                }
+            }
+        }            
     }
     
     post {
