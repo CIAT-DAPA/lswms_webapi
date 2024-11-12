@@ -20,6 +20,12 @@ from api_modules.waterpoint_profiles import SingleWaterpointsProfile
 from api_modules.monitored_latest  import LastMonitoredData
 from api_modules.suscribe_users import SuscribeUsers, SubscribeByUserId,SusbcribeBywaterpointId,Unsuscribeusers
 from api_modules.dialy_update import ProtectedEndpoint
+from api_modules.woreda import GetWoreda
+from api_modules.mean import GetMean
+from api_modules.trend import GetTrend
+from api_modules.forecast import GetForecast
+from api_modules.trend_update import TrendUpdate
+from api_modules.forecast_update import ForecastUpdate
 
 from api_modules.advisory import Advisory
 app = Flask(__name__)
@@ -66,7 +72,27 @@ api.add_resource(Unsuscribeusers, '/api/v1/subscribe/unsubscribe/<waterpointId>/
 api.add_resource(ProtectedEndpoint, '/api/v1/monitored/dialy_update')
 
 api.add_resource(Advisory, '/api/v1/advisory')
+
+# Endpoint for Woreda
+api.add_resource(GetWoreda, '/api/v1/woredas')
+
+# Endpoint for Biomass Mean
+api.add_resource(GetMean, '/api/v1/biomass_mean')
+
+# Endpoint for Biomass Trend 
+api.add_resource(GetTrend, '/api/v1/biomass_trend')
+
+# Endpoint for Biomass Trend Update
+api.add_resource(TrendUpdate, '/api/v1/biomass_trend/update')
+
+# Endpoint for Biomass Forecast
+api.add_resource(GetForecast, '/api/v1/biomass_forecast')
+
+# Endpoint for Forecast Trend Update
+api.add_resource(ForecastUpdate, '/api/v1/biomass_forecast/update')
+
 if __name__ == '__main__':
+   
     connect(host=config['CONNECTION_DB'])
     print("Connected DB")
     
