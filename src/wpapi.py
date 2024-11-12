@@ -93,9 +93,6 @@ api.add_resource(ForecastUpdate, '/api/v1/biomass_forecast/update')
 
 if __name__ == '__main__':
    
-    # Connect using MongoEngine and start Flask app
-    connect(host=config['CONNECTION_DB'])
-    print("Connected DB")
     connect(host=config['CONNECTION_DB'])
     print("Connected DB")
     
