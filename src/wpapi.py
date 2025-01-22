@@ -26,6 +26,7 @@ from api_modules.trend import GetTrend
 from api_modules.forecast import GetForecast
 from api_modules.trend_update import TrendUpdate
 from api_modules.forecast_update import ForecastUpdate
+from api_modules.last_monitored_by_date import LastMonitoredDataByDate
 
 from api_modules.advisory import Advisory
 app = Flask(__name__)
@@ -90,6 +91,11 @@ api.add_resource(GetForecast, '/api/v1/biomass_forecast')
 
 # Endpoint for Forecast Trend Update
 api.add_resource(ForecastUpdate, '/api/v1/biomass_forecast/update')
+
+# Endpoint for Last Monitored Data by Date
+api.add_resource(LastMonitoredDataByDate, '/api/v1/lastmonitoredbydate/<date>')
+
+
 
 if __name__ == '__main__':
    
