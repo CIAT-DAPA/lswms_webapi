@@ -1,7 +1,9 @@
-from flask import Flask, jsonify
+import json
+import time  # Para medir el tiempo de respuesta
+from flask import Flask, jsonify, make_response
 from flask_restful import Resource
 from ormWP import Monitored
-import json
+
 class MonitoredData(Resource):
 
     def __init__(self):
@@ -11,7 +13,7 @@ class MonitoredData(Resource):
         """
         Get all Monitored data
         ---
-        description: Query the information of monitored data from one waterpoint . This endpoint needs one parameter, **waterpoint** that is id of the waterpoint to be queried (this id can be obtained from the endpoint `/waterpoint`); The API will respond with the list of the monitored values from that specific waterpoint.
+        description: Query the information of monitored data from one waterpoint. This endpoint needs one parameter, **waterpoint**, which is the id of the waterpoint to be queried (this id can be obtained from the endpoint `/waterpoint`). The API will respond with the list of monitored values from that specific waterpoint.
         tags:
           - Waterpoint Monitored data
         parameters:
@@ -19,7 +21,7 @@ class MonitoredData(Resource):
             name: waterpoint
             type: string
             required: true
-            description: waterpoint id to be query, for example 64d1bf1cc703fe54e05ee7d6
+            description: Waterpoint ID to be queried, for example 64d1bf1cc703fe54e05ee7d6
         responses:
           200:
             description: Monitored data
@@ -39,18 +41,21 @@ class MonitoredData(Resource):
                 waterpoint:
                   type: string
                   description: Id waterpoint
-                
         """
-        q_set = None
-        if waterpoint is None:
-            q_set = Monitored.objects(trace__enabled=True)
-        else:
-            print(waterpoint)
-            q_set = Monitored.objects(waterpoint = waterpoint)
-        json_data = [{"id": str(x.id), "date": x.date.isoformat(), "values": x.values,"waterpointId":waterpoint} for x in q_set]
 
+        start_time = time.time()  
 
-        return json_data
+        q_set = Monitored.objects(waterpoint=waterpoint) if waterpoint else Monitored.objects(trace__enabled=True)
 
+        response_data = [
+            {"id": str(x.id), "date": x.date.isoformat(), "values": x.values, "waterpointId": waterpoint}
+            for x in q_set
+        ]
 
+        end_time = time.time() 
+        response_time_ms = (end_time - start_time) * 1000  
 
+        response = make_response(jsonify(response_data), 200)
+        response.headers["X-Response-Time"] = f"{response_time_ms:.2f} ms"
+
+        return response
