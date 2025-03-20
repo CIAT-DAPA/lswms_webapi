@@ -47,8 +47,8 @@ class SuscribeUsers(Resource):
             boletin = data.get('boletin', None)
             if userId == "" or boletin == "" or waterpoint == "":
                 return ({"error": "UserId, Boletin and Waterpoint are required"}), 400
-            if boletin!="alert" and boletin!="weekly" :
-                return ({"error": "Boletin must be alert or weekly"}), 400
+            if boletin not in ["alert", "weekly","forecast"]:
+                return ({"error": "Boletin must be alert or weekly or forecast"}), 400
             else:
                 boletin = Boletin(boletin)
             suscription= Suscription.objects(userId=userId, boletin=boletin,trace__enabled=True).first()
