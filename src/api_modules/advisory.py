@@ -102,29 +102,18 @@ class Advisory(Resource):
             wp = Waterpoint.objects(id=str(waterpoint)).first()
             wp_name = wp.name
             monitored = Monitored.objects(waterpoint=wp.id).order_by('-date').limit(1).first()
-            climatology = wp.climatology
             date = monitored.date
-            day = date.day
             latest_monitored_depth = monitored.values[3]['value']
-            month = date.month
-            climatology_values = None
             current_state = None
-            for c in climatology:
-                if c[0]['month'] == month and c[0]['day'] == day:
-                    climatology_values = c[0]['values']
-            if latest_monitored_depth == 0 and climatology_values[3]["value"] == 0:
-                current_state = "Seasonal_dry"
-            elif latest_monitored_depth > climatology_values[3]["value"]:
-                current_state = "Good"
-            elif climatology_values[3]["value"] == 0:
-                current_state = "Seasonal_dry"
-            elif (latest_monitored_depth / climatology_values[3]["value"]) > 0.5:
-                current_state = "Watch"
-            elif (latest_monitored_depth / climatology_values[3]["value"]) > 0.03:
-                current_state = "Alert"
-            else:
+        
+            if latest_monitored_depth < 0.2:
                 current_state = "Near_dry"
-              
+            elif latest_monitored_depth >= 0.2 and latest_monitored_depth < 0.3:
+                current_state = "Alert"
+            elif latest_monitored_depth >= 0.3 and latest_monitored_depth < 0.7:
+                current_state = "Watch"
+            else:
+                current_state = "Good"
             for lang in languages:
                 if lang == 'en':
                     advisory_text = AdvisoryEnum_EN
