@@ -87,7 +87,6 @@ class LastMonitoredData(Resource):
         
         for x in q_set:
             climatology_data = find_date_in_climatology(water.climatology, x.date.isoformat())
-            x.values.append(climatology_data)
             if climatology_data:
                 previous_values = [{"type": item["type"], "value": item["value"]} for item in x.values if "type" in item and "value" in item]
                 
