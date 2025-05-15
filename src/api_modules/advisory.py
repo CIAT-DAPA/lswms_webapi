@@ -2,7 +2,17 @@ from flask_restful import Resource
 from flask import Flask, jsonify, request
 from ormWP import Waterpoint, Monitored
 from enum import Enum
+import datetime
 
+def find_date_in_climatology(climatology, target_date):
+    target_datetime = datetime.datetime.strptime(target_date, "%Y-%m-%dT%H:%M:%S")
+    target_month = target_datetime.month
+    target_day = target_datetime.day
+    
+    for daily_data in climatology:
+        if daily_data[0]['month'] == target_month and daily_data[0]['day'] == target_day:
+            return daily_data
+    return None
 class AdvisoryEnum_EN(Enum):
     Good = 'pond is in Good condition. Manage the water consumption for other purposes'
     Watch = 'pond is in Watch condition. Reduce pond water consumption for other purposes and follow pond manager instructions' 
@@ -102,16 +112,20 @@ class Advisory(Resource):
             wp = Waterpoint.objects(id=str(waterpoint)).first()
             wp_name = wp.name
             monitored = Monitored.objects(waterpoint=wp.id).order_by('-date').limit(1).first()
-            date = monitored.date
-            latest_monitored_depth = monitored.values[3]['value']
+            climatology_data= find_date_in_climatology(wp.climatology, monitored.date.isoformat())
+            latest_monitored_depth = monitored.values[0]['value']
             current_state = None
-        
-            if latest_monitored_depth < 0.2:
+            if latest_monitored_depth >= 0.7:
+                current_state = "Good"
+            elif latest_monitored_depth ==0 and climatology_data[0]['values'][0]['value'] == 0:
+                current_state = "Seasonal_dry"
+            elif latest_monitored_depth >= 0 and climatology_data[0]['values'][0]['value'] < 0.2:
                 current_state = "Near_dry"
-            elif latest_monitored_depth >= 0.2 and latest_monitored_depth < 0.3:
+            elif latest_monitored_depth >= 0.2 and climatology_data[0]['values'][0]['value'] < 0.3:
                 current_state = "Alert"
-            elif latest_monitored_depth >= 0.3 and latest_monitored_depth < 0.7:
+            elif latest_monitored_depth >= 0.3 and climatology_data[0]['values'][0]['value'] < 0.7:
                 current_state = "Watch"
+            
             else:
                 current_state = "Good"
             for lang in languages:
