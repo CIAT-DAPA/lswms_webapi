@@ -28,7 +28,7 @@ from api_modules.trend_update import TrendUpdate
 from api_modules.forecast_update import ForecastUpdate
 from api_modules.last_monitored_by_date import LastMonitoredDataByDate
 
-from api_modules.advisory import Advisory
+from api_modules.advisory import AdvisoryEndpoint
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
@@ -72,7 +72,7 @@ api.add_resource(SusbcribeBywaterpointId, '/api/v1/subscribe/get_subscription_by
 api.add_resource(Unsuscribeusers, '/api/v1/subscribe/unsubscribe/<waterpointId>/<subscriptionid>')
 api.add_resource(ProtectedEndpoint, '/api/v1/monitored/dialy_update')
 
-api.add_resource(Advisory, '/api/v1/advisory')
+api.add_resource(AdvisoryEndpoint, '/api/v1/advisory')
 
 # Endpoint for Woreda
 api.add_resource(GetWoreda, '/api/v1/woredas')
