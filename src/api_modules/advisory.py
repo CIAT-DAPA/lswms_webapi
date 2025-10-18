@@ -46,7 +46,7 @@ class AdvisoryEndpoint(Resource):
                   items:
                     type: string
                   description: "List of languages for the advisory text"
-                  example: ["en", "or", "am"]  # Example for English, Oromo, and Amharic
+                  example: ["en", "or", "am"]
         responses:
           200:
             description: waterpoint_id, advisory, and language
@@ -92,19 +92,22 @@ class AdvisoryEndpoint(Resource):
 
             wp_name = wp.name
             monitored = Monitored.objects(waterpoint=wp.id).order_by('-date').limit(1).first()
+            if not monitored:
+                continue
+
             climatology_data = find_date_in_climatology(wp.climatology, monitored.date.isoformat())
             latest_monitored_depth = monitored.values[0]['value']
 
             # --- determinar estado actual ---
             if latest_monitored_depth >= 0.7:
                 current_state = "GOOD"
-            elif latest_monitored_depth == 0 and climatology_data[0]['values'][0]['value'] == 0:
+            elif latest_monitored_depth == 0 and climatology_data and climatology_data[0]['values'][0]['value'] == 0:
                 current_state = "SEASONAL_DRY"
-            elif latest_monitored_depth >= 0 and climatology_data[0]['values'][0]['value'] < 0.2:
+            elif latest_monitored_depth >= 0 and climatology_data and climatology_data[0]['values'][0]['value'] < 0.2:
                 current_state = "NEAR_DRY"
-            elif latest_monitored_depth >= 0.2 and climatology_data[0]['values'][0]['value'] < 0.3:
+            elif latest_monitored_depth >= 0.2 and climatology_data and climatology_data[0]['values'][0]['value'] < 0.3:
                 current_state = "ALERT"
-            elif latest_monitored_depth >= 0.3 and climatology_data[0]['values'][0]['value'] < 0.7:
+            elif latest_monitored_depth >= 0.3 and climatology_data and climatology_data[0]['values'][0]['value'] < 0.7:
                 current_state = "WATCH"
             else:
                 current_state = "GOOD"
@@ -118,13 +121,26 @@ class AdvisoryEndpoint(Resource):
                 if lang not in advisory_doc.languages:
                     return {"error": f"Language '{lang}' not supported"}, 400
 
-                text = wp_name + " " + advisory_doc.languages[lang]
+                template = advisory_doc.languages[lang]
+
+                # ⬇️ Cambio solicitado:
+                # Para Oromo ('or'): reemplazar "xx" por el nombre del waterpoint.
+                # Si no hay "xx" en el template, se concatena como fallback.
+                if lang == "or":
+                    if isinstance(template, str) and "xx" in template:
+                        text = template.replace("xx", wp_name)
+                    else:
+                        text = f"{wp_name} {template}"
+                else:
+                    # Comportamiento original para otros idiomas
+                    text = f"{wp_name} {template}"
+
                 json_data.append({
                     "waterpointid": waterpoint,
                     "advisory": text,
                     "wp_status": current_state,
                     "language": lang,
-                    "type_advisory": ', '.join(advisory for advisory in advisories if advisory in advisories_allowed)
+                    "type_advisory": ', '.join(a for a in advisories if a in advisories_allowed)
                 })
 
         return jsonify(json_data)
