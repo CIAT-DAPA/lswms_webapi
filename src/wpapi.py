@@ -30,6 +30,7 @@ from api_modules.last_monitored_by_date import LastMonitoredDataByDate
 from api_modules.pdfs import AdvisoryPdfIndex
 
 from api_modules.advisory import AdvisoryEndpoint
+from api_modules.seasonal_sub_forecast import WaterpointForecast
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
@@ -98,6 +99,9 @@ api.add_resource(LastMonitoredDataByDate, '/api/v1/lastmonitoredbydate/<date>')
 
 # Endpoint for Advisory PDFs
 api.add_resource(AdvisoryPdfIndex, '/api/v1/pdfs')
+
+# Endpoint for Seasonal and Subseasonal Forecast
+api.add_resource(WaterpointForecast, '/api/v1/seasonal_sub_forecast/<waterpoint_id>')
 
 
 
