@@ -9,7 +9,7 @@ from ormWP import AdvisoryPdf, AdvisoryTypeEnum
 PDF_DIR = os.getenv("PDF_DIR", r"/Users/cnasayo/Documents/CIAT/waterpoints2025/data/data")
 
 # 🔒 Forzar siempre que las URLs apunten al servidor de estáticos en localhost:4000/pdfs/
-PDF_BASE_URL = os.getenv("PDF_BASE_URL", "http://localhost:4000/pdfs/")
+PDF_BASE_URL = os.getenv("PDF_BASE_URL", "http://196.188.183.125:4000/pdfs/")
 
 def _ensure_trailing_slash(u: str) -> str:
     return u if u.endswith("/") else u + "/"
