@@ -620,6 +620,50 @@ def seed_woredas():
   {
     "name": "Qada Duma",
     "ext_id": "ET051198"
+  },
+  {
+    "name": "Salamago",
+    "ext_id": "ET070701"
+  },
+  {
+      "name": "South Ari",
+      "ext_id": "ET070702"
+  },
+  {
+      "name": "North Ari",
+      "ext_id": "ET070703"
+  },
+  {
+      "name": "Hamer",
+      "ext_id": "ET070704"
+  },
+  {
+      "name": "Bena Tsemay",
+      "ext_id": "ET070705"
+  },
+  {
+      "name": "Dasenech /Kuraz",
+      "ext_id": "ET070706"
+  },
+  {
+      "name": "Malie",
+      "ext_id": "ET070707"
+  },
+  {
+      "name": "Nyngatom",
+      "ext_id": "ET070708"
+  },
+  {
+      "name": "Jinka town",
+      "ext_id": "ET070709"
+  },
+  {
+      "name": "Boko Dawula",
+      "ext_id": "ET070710"
+  },
+  {
+      "name": "Wub Ari",
+      "ext_id": "ET070711"
   }
 ]
 
